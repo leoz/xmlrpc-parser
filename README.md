@@ -29,20 +29,6 @@
   * platform-independent xml parser
   * includes a router to make using this module dead-simple
 
-## Examples
-
-See app.js in the example subdirectory for an example implementing one of the metaWeblog API methods
-
-## Running Tests
-
-To run the test, ensure the dev dependencies are installed
-
-    $ npm install
-
-then run the test:
-
-    $ npm test
-
 ## License
 
 (The MIT License)

@@ -7,16 +7,12 @@
     "xmlbuilder": ">= 2.1.0"
   },
   "description": "Express middleware and router support for XML-RPC",
-  "directories": {
-    "example": "example",
-    "test": "test"
-  },
   "devDependencies": {
-	"express": "3.x.x",
-	"xmlrpc": "*"
+    "express": "3.x.x",
+    "xmlrpc": "*"
   },
   "scripts": {
-    "test": "node ./test/test"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -28,7 +24,7 @@
     "xml",
     "xmlrpc",
     "rpc",
-	"metaweblog"
+    "metaweblog"
   ],
   "author": "Nathan Cartwright",
   "license": "MIT"
