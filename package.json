@@ -7,6 +7,9 @@
     "utf8-base64": "^0.1.2"
   },
   "description": "Middleware for XML-RPC",
+  "files": [
+    "src"
+  ],
   "scripts": {
     "test": "jest"
   },
