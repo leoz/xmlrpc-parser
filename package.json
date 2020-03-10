@@ -1,6 +1,6 @@
 {
   "name": "xmlrpc-parser",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "./src/index.js",
   "dependencies": {
     "sax-parser": "^2.0.1",
