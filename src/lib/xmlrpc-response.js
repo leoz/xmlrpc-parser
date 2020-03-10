@@ -1,5 +1,5 @@
 //
-import XmlRpcParser from "./xmlrpc-parser";
+import XmlRpcParser from './xmlrpc-parser';
 
 function XMLRPCResponse() {
   return this;
@@ -19,4 +19,4 @@ XMLRPCResponse.prototype.parse = function(str) {
   });
 };
 
-module.exports = XMLRPCResponse;
+export default XMLRPCResponse;

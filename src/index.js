@@ -5,5 +5,5 @@
  * License: MIT
  */
 
-export { default as XmlRpcMessage } from "./lib/xmlrpc-message";
-export { default as XmlRpcResponse } from "./lib/xmlrpc-response";
+export { default as XmlRpcMessage } from './lib/xmlrpc-message';
+export { default as XmlRpcResponse } from './lib/xmlrpc-response';
