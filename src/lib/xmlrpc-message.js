@@ -58,8 +58,8 @@ XMLRPCMessage.prototype.xml = function() {
 
 // Dispatch to generate the XML appropriate for a given data type.
 XMLRPCMessage.prototype.getParamXML = function(data) {
-  var xml,
-    type = this.dataTypeOf(data);
+  var xml;
+  var type = this.dataTypeOf(data);
   switch (type) {
     case 'date':
       xml = this.toDateXML(data);
@@ -85,13 +85,13 @@ XMLRPCMessage.prototype.dataTypeOf = function(o) {
   type = type.toLowerCase();
   switch (type) {
     case 'number':
-      if (Math.round(o) == o) type = 'i4';
+      if (Math.round(o) === o) type = 'i4';
       else type = 'double';
       break;
     case 'object':
       var con = o.constructor;
-      if (con == Date) type = 'date';
-      else if (con == Array) type = 'array';
+      if (con === Date) type = 'date';
+      else if (con === Array) type = 'array';
       else type = 'struct';
       break;
   }
@@ -104,14 +104,14 @@ XMLRPCMessage.prototype.toValueXML = function(type, data) {
 };
 
 XMLRPCMessage.prototype.toBooleanXML = function(data) {
-  var value = data == true ? 1 : 0;
+  var value = data === true ? 1 : 0;
   var xml = '<boolean>' + value + '</boolean>';
   return xml;
 };
 
 XMLRPCMessage.prototype.toDateXML = function(data) {
   var xml = '<dateTime.iso8601>';
-  xml += dateToISO8601(data);
+  xml += this.dateToISO8601(data);
   xml += '</dateTime.iso8601>';
   return xml;
 };
@@ -138,7 +138,7 @@ XMLRPCMessage.prototype.toStructXML = function(data) {
 };
 
 XMLRPCMessage.prototype.dateToISO8601 = function dateToISO8601(
-  date_in,
+  dateIn,
   format,
   offset
 ) {
@@ -157,17 +157,18 @@ XMLRPCMessage.prototype.dateToISO8601 = function dateToISO8601(
        fraction of a second
        YYYY-MM-DDThh:mm:ss.sTZD (eg 1997-07-16T19:20:30.45+01:00)
     */
+  var date;
   if (!format) {
-    var format = 6;
+    format = 6;
   }
   if (!offset) {
-    var offset = 'Z';
-    var date = date_in;
+    offset = 'Z';
+    date = dateIn;
   } else {
     var d = offset.match(/([-+])([0-9]{2}):([0-9]{2})/);
     var offsetnum = Number(d[2]) * 60 + Number(d[3]);
-    offsetnum *= d[1] == '-' ? -1 : 1;
-    var date = new Date(Number(Number(date_in) + offsetnum * 60000));
+    offsetnum *= d[1] === '-' ? -1 : 1;
+    date = new Date(Number(Number(dateIn) + offsetnum * 60000));
   }
 
   var zeropad = function(num) {

@@ -93,10 +93,11 @@ XmlRpcParser.prototype.getHandler = function getHandler() {
     // React to the end of elements.
     cb.onEndElementNS(function(elem, prefix, uri) {
       var cdata = instance.cdataStack
-          .pop()
-          .join('')
-          .trim(),
-        last_elem = instance.elementStack.pop();
+        .pop()
+        .join('')
+        .trim();
+      instance.elementStack.pop();
+      var currValue;
       switch (elem) {
         // The end of a call or response means a successful end of parsing,
         case 'methodCall':
@@ -123,11 +124,11 @@ XmlRpcParser.prototype.getHandler = function getHandler() {
         // encountered name and value and stick the pair into the
         // current struct under construction
         case 'member':
-          var curr_name = instance.nameStack.pop(),
-            curr_value = instance.valueStack.pop();
+          var currName = instance.nameStack.pop();
+          currValue = instance.valueStack.pop();
           instance.valueStack[instance.valueStack.length - 1][
-            curr_name
-          ] = curr_value;
+            currName
+          ] = currValue;
           break;
         // Explicit string, i4, int, and double values are treated the same.
         // TODO: Should these be parsed more strictly?
@@ -142,7 +143,7 @@ XmlRpcParser.prototype.getHandler = function getHandler() {
         // Parse a boolean into the JS equivalent.
         case 'boolean':
           instance.isImplicitString = false;
-          instance.valueStack.push('true' == cdata || 1 == cdata);
+          instance.valueStack.push(cdata === 'true' || cdata === 1);
           break;
         // Parse a date from its ISO 8601 representation.
         case 'dateTime.iso8601':
@@ -168,13 +169,11 @@ XmlRpcParser.prototype.getHandler = function getHandler() {
             instance.valueStack.push(cdata);
           }
           if (
-            'data' == instance.elementStack[instance.elementStack.length - 1]
+            instance.elementStack[instance.elementStack.length - 1] === 'data'
           ) {
             // Nested inside a data element, so assume an array.
-            var curr_value = instance.valueStack.pop();
-            instance.valueStack[instance.valueStack.length - 1].push(
-              curr_value
-            );
+            currValue = instance.valueStack.pop();
+            instance.valueStack[instance.valueStack.length - 1].push(currValue);
           }
           break;
       }
@@ -196,11 +195,11 @@ function parseISO8601(string) {
   var regexp =
     '([0-9]{4})(-?([0-9]{2})(-?([0-9]{2})(T([0-9]{2}):([0-9]{2})(:([0-9]{2})(.([0-9]+))?)?(Z|(([-+])([0-9]{2}):([0-9]{2})))?)?)?)?';
 
-  var time,
-    offset = 0,
-    dOut = new Date(),
-    d = string.match(new RegExp(regexp)),
-    date = new Date(d[1], 0, 1);
+  var time;
+  var offset = 0;
+  var dOut = new Date();
+  var d = string.match(new RegExp(regexp));
+  var date = new Date(d[1], 0, 1);
 
   if (d[3]) {
     date.setMonth(d[3] - 1);
@@ -222,7 +221,7 @@ function parseISO8601(string) {
   }
   if (d[14]) {
     offset = Number(d[16]) * 60 + Number(d[17]);
-    offset *= d[15] == '-' ? 1 : -1;
+    offset *= d[15] === '-' ? 1 : -1;
   }
 
   offset -= date.getTimezoneOffset();
