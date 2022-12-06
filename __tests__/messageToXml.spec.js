@@ -1,5 +1,5 @@
 //
-import { XmlRpcMessage } from '../src/index';
+import { XmlRpcMessage } from '../src/index.js';
 
 describe('Fetch XML funtion', () => {
   test('it should fetch XML', () => {

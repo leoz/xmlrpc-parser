@@ -1,6 +1,6 @@
 //
 import fetch from 'cross-fetch';
-import { XmlRpcMessage, XmlRpcResponse } from '../src/index';
+import { XmlRpcMessage, XmlRpcResponse } from '../src/index.js';
 
 describe('Fetch and parse XML funtion', () => {
   test('It should fetch and parse XML', async () => {

@@ -1,5 +1,5 @@
 //
-import XmlRpcParser from './xmlrpc-parser';
+import XmlRpcParser from './xmlrpc-parser.js';
 
 function XMLRPCResponse() {
   return this;
