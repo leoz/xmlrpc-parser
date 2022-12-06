@@ -15,7 +15,7 @@ function XMLRPCMessage(methodname, params) {
   return this;
 }
 
-XMLRPCMessage.prototype.xml = function() {
+XMLRPCMessage.prototype.xml = function () {
   let xml = '<?xml version="1.0"?>\n';
 
   if (this.method) {
@@ -57,7 +57,7 @@ XMLRPCMessage.prototype.xml = function() {
 };
 
 // Dispatch to generate the XML appropriate for a given data type.
-XMLRPCMessage.prototype.getParamXML = function(data) {
+XMLRPCMessage.prototype.getParamXML = function (data) {
   let xml;
   const type = this.dataTypeOf(data);
   switch (type) {
@@ -80,7 +80,7 @@ XMLRPCMessage.prototype.getParamXML = function(data) {
   return xml;
 };
 
-XMLRPCMessage.prototype.dataTypeOf = function(o) {
+XMLRPCMessage.prototype.dataTypeOf = function (o) {
   let type = typeof o;
   type = type.toLowerCase();
   switch (type) {
@@ -97,25 +97,25 @@ XMLRPCMessage.prototype.dataTypeOf = function(o) {
   return type;
 };
 
-XMLRPCMessage.prototype.toValueXML = function(type, data) {
+XMLRPCMessage.prototype.toValueXML = function (type, data) {
   const xml = '<' + type + '>' + data + '</' + type + '>';
   return xml;
 };
 
-XMLRPCMessage.prototype.toBooleanXML = function(data) {
+XMLRPCMessage.prototype.toBooleanXML = function (data) {
   const value = data === true ? 1 : 0;
   const xml = '<boolean>' + value + '</boolean>';
   return xml;
 };
 
-XMLRPCMessage.prototype.toDateXML = function(data) {
+XMLRPCMessage.prototype.toDateXML = function (data) {
   let xml = '<dateTime.iso8601>';
   xml += this.dateToISO8601(data);
   xml += '</dateTime.iso8601>';
   return xml;
 };
 
-XMLRPCMessage.prototype.toArrayXML = function(data) {
+XMLRPCMessage.prototype.toArrayXML = function (data) {
   let xml = '<array><data>\n';
   for (let i = 0; i < data.length; i++) {
     xml += '<value>' + this.getParamXML(data[i]) + '</value>\n';
@@ -124,7 +124,7 @@ XMLRPCMessage.prototype.toArrayXML = function(data) {
   return xml;
 };
 
-XMLRPCMessage.prototype.toStructXML = function(data) {
+XMLRPCMessage.prototype.toStructXML = function (data) {
   let xml = '<struct>\n';
   for (const i in data) {
     xml += '<member>\n';
@@ -170,7 +170,7 @@ XMLRPCMessage.prototype.dateToISO8601 = function dateToISO8601(
     date = new Date(Number(Number(dateIn) + offsetnum * 60000));
   }
 
-  const zeropad = function(num) {
+  const zeropad = function (num) {
     return (num < 10 ? '0' : '') + num;
   };
 
@@ -189,9 +189,9 @@ XMLRPCMessage.prototype.dateToISO8601 = function dateToISO8601(
   if (format > 5) {
     const secs = Number(
       date.getUTCSeconds() +
-        '.' +
-        (date.getUTCMilliseconds() < 100 ? '0' : '') +
-        zeropad(date.getUTCMilliseconds())
+      '.' +
+      (date.getUTCMilliseconds() < 100 ? '0' : '') +
+      zeropad(date.getUTCMilliseconds())
     );
     str += ':' + zeropad(secs);
   } else if (format > 4) {

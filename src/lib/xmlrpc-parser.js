@@ -37,7 +37,7 @@ XmlRpcParser.prototype.finish = function finish() {
   instance.finished = true;
 
   // XML parsing is all async, so this needs to be as well.
-  setTimeout(function() {
+  setTimeout(function () {
     if (instance.complete) {
       instance.events.onDone(instance.data);
     } else {
@@ -51,10 +51,10 @@ XmlRpcParser.prototype.finish = function finish() {
 XmlRpcParser.prototype.getHandler = function getHandler() {
   const instance = this;
 
-  return function(cb) {
+  return function (cb) {
     // React to the start of elements, detects responses and faults, as
     // well as initializing a new struct or array in progress.
-    cb.onStartElementNS(function(elem, attrs, prefix, uri, namespaces) {
+    cb.onStartElementNS(function (elem, attrs, prefix, uri, namespaces) {
       // Push the current element name onto the stack, along with a
       // collector for CDATA.
       instance.elementStack.push(elem);
@@ -84,14 +84,14 @@ XmlRpcParser.prototype.getHandler = function getHandler() {
     });
 
     // Collect CDATA if we're in an element
-    cb.onCharacters(function(chars) {
+    cb.onCharacters(function (chars) {
       if (instance.cdataStack.length) {
         instance.cdataStack[instance.cdataStack.length - 1].push(chars);
       }
     });
 
     // React to the end of elements.
-    cb.onEndElementNS(function(elem, prefix, uri) {
+    cb.onEndElementNS(function (elem, prefix, uri) {
       const cdata = instance.cdataStack
         .pop()
         .join('')
@@ -124,12 +124,12 @@ XmlRpcParser.prototype.getHandler = function getHandler() {
         // encountered name and value and stick the pair into the
         // current struct under construction
         case 'member': {
-            const currName = instance.nameStack.pop();
-            currValue = instance.valueStack.pop();
-            instance.valueStack[instance.valueStack.length - 1][
-              currName
-            ] = currValue;
-          }
+          const currName = instance.nameStack.pop();
+          currValue = instance.valueStack.pop();
+          instance.valueStack[instance.valueStack.length - 1][
+            currName
+          ] = currValue;
+        }
           break;
         // Explicit string, i4, int, and double values are treated the same.
         // TODO: Should these be parsed more strictly?
@@ -181,12 +181,12 @@ XmlRpcParser.prototype.getHandler = function getHandler() {
     });
 
     // React to end of document by calling the onDone handler
-    cb.onEndDocument(function() {
+    cb.onEndDocument(function () {
       instance.finish();
     });
 
     // React to an error by calling the onError handler
-    cb.onError(function(msg) {
+    cb.onError(function (msg) {
       instance.events.onError(msg);
     });
   };

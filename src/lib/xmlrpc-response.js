@@ -5,13 +5,13 @@ function XMLRPCResponse() {
   return this;
 }
 
-XMLRPCResponse.prototype.parse = function(str) {
-  return new Promise(function(resolve, reject) {
+XMLRPCResponse.prototype.parse = function (str) {
+  return new Promise(function (resolve, reject) {
     const parser = new XmlRpcParser({
-      onDone: function(data) {
+      onDone: function (data) {
         resolve(data);
       },
-      onError: function(err) {
+      onError: function (err) {
         reject(err);
       }
     });

@@ -2,7 +2,7 @@
   "name": "xmlrpc-parser",
   "version": "1.0.2",
   "main": "./src/index.js",
-	"type": "module",
+  "type": "module",
   "dependencies": {
     "sax-parser": "^2.0.1",
     "utf8-base64": "^0.1.2"
