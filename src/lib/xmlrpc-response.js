@@ -7,7 +7,7 @@ function XMLRPCResponse() {
 
 XMLRPCResponse.prototype.parse = function(str) {
   return new Promise(function(resolve, reject) {
-    var parser = new XmlRpcParser({
+    const parser = new XmlRpcParser({
       onDone: function(data) {
         resolve(data);
       },

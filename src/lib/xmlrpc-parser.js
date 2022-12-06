@@ -26,7 +26,7 @@ XmlRpcParser.prototype.parseString = function parseString(str) {
 };
 
 XmlRpcParser.prototype.finish = function finish() {
-  var instance = this;
+  const instance = this;
 
   // The flag `this.finished` serves to debounce this function, which
   // could be called multiple times: eg, in response to the successful
@@ -49,7 +49,7 @@ XmlRpcParser.prototype.finish = function finish() {
 };
 
 XmlRpcParser.prototype.getHandler = function getHandler() {
-  var instance = this;
+  const instance = this;
 
   return function(cb) {
     // React to the start of elements, detects responses and faults, as
@@ -92,12 +92,12 @@ XmlRpcParser.prototype.getHandler = function getHandler() {
 
     // React to the end of elements.
     cb.onEndElementNS(function(elem, prefix, uri) {
-      var cdata = instance.cdataStack
+      const cdata = instance.cdataStack
         .pop()
         .join('')
         .trim();
       instance.elementStack.pop();
-      var currValue;
+      let currValue;
       switch (elem) {
         // The end of a call or response means a successful end of parsing,
         case 'methodCall':
@@ -123,12 +123,13 @@ XmlRpcParser.prototype.getHandler = function getHandler() {
         // The end of a member is where we pick up the last
         // encountered name and value and stick the pair into the
         // current struct under construction
-        case 'member':
-          var currName = instance.nameStack.pop();
-          currValue = instance.valueStack.pop();
-          instance.valueStack[instance.valueStack.length - 1][
-            currName
-          ] = currValue;
+        case 'member': {
+            const currName = instance.nameStack.pop();
+            currValue = instance.valueStack.pop();
+            instance.valueStack[instance.valueStack.length - 1][
+              currName
+            ] = currValue;
+          }
           break;
         // Explicit string, i4, int, and double values are treated the same.
         // TODO: Should these be parsed more strictly?
@@ -192,14 +193,13 @@ XmlRpcParser.prototype.getHandler = function getHandler() {
 };
 
 function parseISO8601(string) {
-  var regexp =
+  const regexp =
     '([0-9]{4})(-?([0-9]{2})(-?([0-9]{2})(T([0-9]{2}):([0-9]{2})(:([0-9]{2})(.([0-9]+))?)?(Z|(([-+])([0-9]{2}):([0-9]{2})))?)?)?)?';
 
-  var time;
-  var offset = 0;
-  var dOut = new Date();
-  var d = string.match(new RegExp(regexp));
-  var date = new Date(d[1], 0, 1);
+  let offset = 0;
+  const dOut = new Date();
+  const d = string.match(new RegExp(regexp));
+  const date = new Date(d[1], 0, 1);
 
   if (d[3]) {
     date.setMonth(d[3] - 1);
@@ -225,7 +225,7 @@ function parseISO8601(string) {
   }
 
   offset -= date.getTimezoneOffset();
-  time = Number(date) + offset * 60 * 1000;
+  const time = Number(date) + offset * 60 * 1000;
   dOut.setTime(Number(time));
 
   return dOut;

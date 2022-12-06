@@ -3,11 +3,11 @@
 //
 // Expects a method name and list of parameters:
 //
-//     var msg = new XMLRPC.Call(
+//     let msg = new XMLRPC.Call(
 //         'test.echo',
 //         [ "one", "two", "three" ]
 //     );
-//     var xml = msg.xml();
+//     let xml = msg.xml();
 //
 function XMLRPCMessage(methodname, params) {
   this.method = methodname || 'system.listMethods';
@@ -16,7 +16,7 @@ function XMLRPCMessage(methodname, params) {
 }
 
 XMLRPCMessage.prototype.xml = function() {
-  var xml = '<?xml version="1.0"?>\n';
+  let xml = '<?xml version="1.0"?>\n';
 
   if (this.method) {
     xml += '<methodCall>\n';
@@ -31,7 +31,7 @@ XMLRPCMessage.prototype.xml = function() {
     xml += '<fault>\n';
   }
 
-  for (var i = 0; i < this.params.length; i++) {
+  for (let i = 0; i < this.params.length; i++) {
     if (!this.is_fault) {
       xml += '<param>\n';
     }
@@ -58,8 +58,8 @@ XMLRPCMessage.prototype.xml = function() {
 
 // Dispatch to generate the XML appropriate for a given data type.
 XMLRPCMessage.prototype.getParamXML = function(data) {
-  var xml;
-  var type = this.dataTypeOf(data);
+  let xml;
+  const type = this.dataTypeOf(data);
   switch (type) {
     case 'date':
       xml = this.toDateXML(data);
@@ -81,7 +81,7 @@ XMLRPCMessage.prototype.getParamXML = function(data) {
 };
 
 XMLRPCMessage.prototype.dataTypeOf = function(o) {
-  var type = typeof o;
+  let type = typeof o;
   type = type.toLowerCase();
   switch (type) {
     case 'number':
@@ -89,9 +89,8 @@ XMLRPCMessage.prototype.dataTypeOf = function(o) {
       else type = 'double';
       break;
     case 'object':
-      var con = o.constructor;
-      if (con === Date) type = 'date';
-      else if (con === Array) type = 'array';
+      if (o.constructor === Date) type = 'date';
+      else if (o.constructor === Array) type = 'array';
       else type = 'struct';
       break;
   }
@@ -99,26 +98,26 @@ XMLRPCMessage.prototype.dataTypeOf = function(o) {
 };
 
 XMLRPCMessage.prototype.toValueXML = function(type, data) {
-  var xml = '<' + type + '>' + data + '</' + type + '>';
+  const xml = '<' + type + '>' + data + '</' + type + '>';
   return xml;
 };
 
 XMLRPCMessage.prototype.toBooleanXML = function(data) {
-  var value = data === true ? 1 : 0;
-  var xml = '<boolean>' + value + '</boolean>';
+  const value = data === true ? 1 : 0;
+  const xml = '<boolean>' + value + '</boolean>';
   return xml;
 };
 
 XMLRPCMessage.prototype.toDateXML = function(data) {
-  var xml = '<dateTime.iso8601>';
+  let xml = '<dateTime.iso8601>';
   xml += this.dateToISO8601(data);
   xml += '</dateTime.iso8601>';
   return xml;
 };
 
 XMLRPCMessage.prototype.toArrayXML = function(data) {
-  var xml = '<array><data>\n';
-  for (var i = 0; i < data.length; i++) {
+  let xml = '<array><data>\n';
+  for (let i = 0; i < data.length; i++) {
     xml += '<value>' + this.getParamXML(data[i]) + '</value>\n';
   }
   xml += '</data></array>\n';
@@ -126,8 +125,8 @@ XMLRPCMessage.prototype.toArrayXML = function(data) {
 };
 
 XMLRPCMessage.prototype.toStructXML = function(data) {
-  var xml = '<struct>\n';
-  for (var i in data) {
+  let xml = '<struct>\n';
+  for (const i in data) {
     xml += '<member>\n';
     xml += '<name>' + i + '</name>\n';
     xml += '<value>' + this.getParamXML(data[i]) + '</value>\n';
@@ -157,7 +156,7 @@ XMLRPCMessage.prototype.dateToISO8601 = function dateToISO8601(
        fraction of a second
        YYYY-MM-DDThh:mm:ss.sTZD (eg 1997-07-16T19:20:30.45+01:00)
     */
-  var date;
+  let date;
   if (!format) {
     format = 6;
   }
@@ -165,17 +164,17 @@ XMLRPCMessage.prototype.dateToISO8601 = function dateToISO8601(
     offset = 'Z';
     date = dateIn;
   } else {
-    var d = offset.match(/([-+])([0-9]{2}):([0-9]{2})/);
-    var offsetnum = Number(d[2]) * 60 + Number(d[3]);
+    const d = offset.match(/([-+])([0-9]{2}):([0-9]{2})/);
+    let offsetnum = Number(d[2]) * 60 + Number(d[3]);
     offsetnum *= d[1] === '-' ? -1 : 1;
     date = new Date(Number(Number(dateIn) + offsetnum * 60000));
   }
 
-  var zeropad = function(num) {
+  const zeropad = function(num) {
     return (num < 10 ? '0' : '') + num;
   };
 
-  var str = '';
+  let str = '';
   str += date.getUTCFullYear();
   if (format > 1) {
     str += '-' + zeropad(date.getUTCMonth() + 1);
@@ -188,7 +187,7 @@ XMLRPCMessage.prototype.dateToISO8601 = function dateToISO8601(
       'T' + zeropad(date.getUTCHours()) + ':' + zeropad(date.getUTCMinutes());
   }
   if (format > 5) {
-    var secs = Number(
+    const secs = Number(
       date.getUTCSeconds() +
         '.' +
         (date.getUTCMilliseconds() < 100 ? '0' : '') +

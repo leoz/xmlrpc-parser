@@ -1,6 +1,6 @@
 /**
  * @license xrpc
- * (c) 2016 - 2019 Leonid Zolotarev
+ * (c) 2016 - 2022 Leonid Zolotarev
  * (c) 2012 - 2013 Nathan Cartwright
  * License: MIT
  */
