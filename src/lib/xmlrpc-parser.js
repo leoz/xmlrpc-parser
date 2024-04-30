@@ -144,7 +144,7 @@ XmlRpcParser.prototype.getHandler = function getHandler() {
         // Parse a boolean into the JS equivalent.
         case 'boolean':
           instance.isImplicitString = false;
-          instance.valueStack.push(cdata === 'true' || cdata === 1);
+          instance.valueStack.push(cdata === 'true' || cdata === '1');
           break;
         // Parse a date from its ISO 8601 representation.
         case 'dateTime.iso8601':
