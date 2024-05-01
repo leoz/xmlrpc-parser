@@ -10,7 +10,7 @@
 //     let xml = msg.xml();
 //
 function XMLRPCMessage(methodname, params) {
-  this.method = methodname || 'system.listMethods';
+  this.method = methodname || "system.listMethods";
   this.params = params || [];
   return this;
 }
@@ -19,38 +19,38 @@ XMLRPCMessage.prototype.xml = function () {
   let xml = '<?xml version="1.0"?>\n';
 
   if (this.method) {
-    xml += '<methodCall>\n';
-    xml += '<methodName>' + this.method + '</methodName>\n';
+    xml += "<methodCall>\n";
+    xml += "<methodName>" + this.method + "</methodName>\n";
   } else {
-    xml += '<methodResponse>\n';
+    xml += "<methodResponse>\n";
   }
 
   if (!this.is_fault) {
-    xml += '<params>\n';
+    xml += "<params>\n";
   } else {
-    xml += '<fault>\n';
+    xml += "<fault>\n";
   }
 
   for (let i = 0; i < this.params.length; i++) {
     if (!this.is_fault) {
-      xml += '<param>\n';
+      xml += "<param>\n";
     }
-    xml += '<value>' + this.getParamXML(this.params[i]) + '</value>\n';
+    xml += "<value>" + this.getParamXML(this.params[i]) + "</value>\n";
     if (!this.is_fault) {
-      xml += '</param>\n';
+      xml += "</param>\n";
     }
   }
 
   if (!this.is_fault) {
-    xml += '</params>\n';
+    xml += "</params>\n";
   } else {
-    xml += '</fault>\n';
+    xml += "</fault>\n";
   }
 
   if (this.method) {
-    xml += '</methodCall>';
+    xml += "</methodCall>";
   } else {
-    xml += '</methodResponse>';
+    xml += "</methodResponse>";
   }
 
   return xml;
@@ -61,16 +61,16 @@ XMLRPCMessage.prototype.getParamXML = function (data) {
   let xml;
   const type = this.dataTypeOf(data);
   switch (type) {
-    case 'date':
+    case "date":
       xml = this.toDateXML(data);
       break;
-    case 'array':
+    case "array":
       xml = this.toArrayXML(data);
       break;
-    case 'struct':
+    case "struct":
       xml = this.toStructXML(data);
       break;
-    case 'boolean':
+    case "boolean":
       xml = this.toBooleanXML(data);
       break;
     default:
@@ -84,55 +84,55 @@ XMLRPCMessage.prototype.dataTypeOf = function (o) {
   let type = typeof o;
   type = type.toLowerCase();
   switch (type) {
-    case 'number':
-      if (Math.round(o) === o) type = 'i4';
-      else type = 'double';
+    case "number":
+      if (Math.round(o) === o) type = "i4";
+      else type = "double";
       break;
-    case 'object':
-      if (o.constructor === Date) type = 'date';
-      else if (o.constructor === Array) type = 'array';
-      else type = 'struct';
+    case "object":
+      if (o.constructor === Date) type = "date";
+      else if (o.constructor === Array) type = "array";
+      else type = "struct";
       break;
   }
   return type;
 };
 
 XMLRPCMessage.prototype.toValueXML = function (type, data) {
-  const xml = '<' + type + '>' + data + '</' + type + '>';
+  const xml = "<" + type + ">" + data + "</" + type + ">";
   return xml;
 };
 
 XMLRPCMessage.prototype.toBooleanXML = function (data) {
   const value = data === true ? 1 : 0;
-  const xml = '<boolean>' + value + '</boolean>';
+  const xml = "<boolean>" + value + "</boolean>";
   return xml;
 };
 
 XMLRPCMessage.prototype.toDateXML = function (data) {
-  let xml = '<dateTime.iso8601>';
+  let xml = "<dateTime.iso8601>";
   xml += this.dateToISO8601(data);
-  xml += '</dateTime.iso8601>';
+  xml += "</dateTime.iso8601>";
   return xml;
 };
 
 XMLRPCMessage.prototype.toArrayXML = function (data) {
-  let xml = '<array><data>\n';
+  let xml = "<array><data>\n";
   for (let i = 0; i < data.length; i++) {
-    xml += '<value>' + this.getParamXML(data[i]) + '</value>\n';
+    xml += "<value>" + this.getParamXML(data[i]) + "</value>\n";
   }
-  xml += '</data></array>\n';
+  xml += "</data></array>\n";
   return xml;
 };
 
 XMLRPCMessage.prototype.toStructXML = function (data) {
-  let xml = '<struct>\n';
+  let xml = "<struct>\n";
   for (const i in data) {
-    xml += '<member>\n';
-    xml += '<name>' + i + '</name>\n';
-    xml += '<value>' + this.getParamXML(data[i]) + '</value>\n';
-    xml += '</member>\n';
+    xml += "<member>\n";
+    xml += "<name>" + i + "</name>\n";
+    xml += "<value>" + this.getParamXML(data[i]) + "</value>\n";
+    xml += "</member>\n";
   }
-  xml += '</struct>\n';
+  xml += "</struct>\n";
   return xml;
 };
 
@@ -161,41 +161,41 @@ XMLRPCMessage.prototype.dateToISO8601 = function dateToISO8601(
     format = 6;
   }
   if (!offset) {
-    offset = 'Z';
+    offset = "Z";
     date = dateIn;
   } else {
     const d = offset.match(/([-+])([0-9]{2}):([0-9]{2})/);
     let offsetnum = Number(d[2]) * 60 + Number(d[3]);
-    offsetnum *= d[1] === '-' ? -1 : 1;
+    offsetnum *= d[1] === "-" ? -1 : 1;
     date = new Date(Number(Number(dateIn) + offsetnum * 60000));
   }
 
   const zeropad = function (num) {
-    return (num < 10 ? '0' : '') + num;
+    return (num < 10 ? "0" : "") + num;
   };
 
-  let str = '';
+  let str = "";
   str += date.getUTCFullYear();
   if (format > 1) {
-    str += '-' + zeropad(date.getUTCMonth() + 1);
+    str += "-" + zeropad(date.getUTCMonth() + 1);
   }
   if (format > 2) {
-    str += '-' + zeropad(date.getUTCDate());
+    str += "-" + zeropad(date.getUTCDate());
   }
   if (format > 3) {
     str +=
-      'T' + zeropad(date.getUTCHours()) + ':' + zeropad(date.getUTCMinutes());
+      "T" + zeropad(date.getUTCHours()) + ":" + zeropad(date.getUTCMinutes());
   }
   if (format > 5) {
     const secs = Number(
       date.getUTCSeconds() +
-      '.' +
-      (date.getUTCMilliseconds() < 100 ? '0' : '') +
-      zeropad(date.getUTCMilliseconds())
+        "." +
+        (date.getUTCMilliseconds() < 100 ? "0" : "") +
+        zeropad(date.getUTCMilliseconds())
     );
-    str += ':' + zeropad(secs);
+    str += ":" + zeropad(secs);
   } else if (format > 4) {
-    str += ':' + zeropad(date.getUTCSeconds());
+    str += ":" + zeropad(date.getUTCSeconds());
   }
 
   if (format > 3) {

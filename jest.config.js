@@ -1,10 +1,10 @@
 // jest.config.js
 
 export default {
-  testEnvironment: 'node',
+  testEnvironment: "node",
 
   transform: {
-    '^.+\\.jsx?$': 'babel-jest'
+    "^.+\\.jsx?$": "babel-jest",
   },
-  verbose: true
+  verbose: true,
 };

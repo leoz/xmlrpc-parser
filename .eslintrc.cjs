@@ -5,19 +5,19 @@ module.exports = {
     browser: true,
     es6: true,
     node: true,
-    'jest/globals': true
+    "jest/globals": true,
   },
-  extends: ['standard', 'prettier'],
+  extends: ["standard", "prettier"],
   globals: {
-    Atomics: 'readonly',
-    SharedArrayBuffer: 'readonly'
+    Atomics: "readonly",
+    SharedArrayBuffer: "readonly",
   },
   parserOptions: {
     ecmaVersion: 2018,
-    sourceType: 'module'
+    sourceType: "module",
   },
   rules: {
-    semi: [2, 'always']
+    semi: [2, "always"],
   },
-  plugins: ['jest']
+  plugins: ["jest"],
 };

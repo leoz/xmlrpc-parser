@@ -15,16 +15,16 @@ npm install xmlrpc-parser
 
 ```javascript
 //
-import fetch from 'cross-fetch';
-import { XmlRpcMessage, XmlRpcResponse } from 'xmlrpc-parser';
+import fetch from "cross-fetch";
+import { XmlRpcMessage, XmlRpcResponse } from "xmlrpc-parser";
 //
-const method = 'examples.getStateName';
+const method = "examples.getStateName";
 const params = 23;
 const message = new XmlRpcMessage(method, [params]);
 const input = message.xml();
-const URL = 'http://betty.userland.com/RPC2';
+const URL = "http://betty.userland.com/RPC2";
 //
-const res = await fetch(URL, { method: 'post', body: input });
+const res = await fetch(URL, { method: "post", body: input });
 const xml = await res.text();
 //
 const response = new XmlRpcResponse();
