@@ -4,7 +4,7 @@
   "main": "./src/index.js",
   "type": "module",
   "dependencies": {
-    "sax-parser": "^2.0.2",
+    "sax-parser": "^2.0.3",
     "utf8-base64": "^0.1.2"
   },
   "description": "XML-RPC Parser",
@@ -33,7 +33,7 @@
   "devDependencies": {
     "@babel/preset-env": "^7.20.2",
     "babel-jest": "^29.3.1",
-    "cross-fetch": "^3.1.5",
+    "cross-fetch": "^4.0.0",
     "eslint": "^8.29.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-config-standard": "^17.0.0",
